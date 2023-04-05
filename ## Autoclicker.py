@@ -12,8 +12,8 @@ from pynput.keyboard import Listener, KeyCode
 # variable assignments 
 delay = 0.001
 button = Button.right
-startStopKey = KeyCode(char = 'a')
-stopKey = KeyCode(char = 'b')
+startStopKey = KeyCode(char='a')
+stopKey = KeyCode(char='b')
 
 # Threading used to control clicks 
 class ClickMouse(threading.Thread):
