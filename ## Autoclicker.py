@@ -54,7 +54,7 @@ click_thread.start()
 
     # New method on_press, taking key as argument
 
-def onPress(key): 
+def on_press(key): 
 
     # startStopKey will stop clicking if 
     # running flag is set to true
@@ -72,5 +72,5 @@ def onPress(key):
         click_thread.exit()
         listener.stop()
 
-with Listener(onPress=onPress) as listener:
+with Listener(on_press=on_press) as listener:
     listener.join()
