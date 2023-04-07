@@ -1,4 +1,5 @@
 ## Autoclicker
+# Press "a" to sta
 
 # Importing shit, time and threading
 import time
@@ -14,63 +15,67 @@ delay = 0.001
 button = Button.left
 startStopKey = KeyCode(char='a')
 stopKey = KeyCode(char='b')
+stopLoop = False # Stop variable, used to stop a loop
 
-# Threading used to control clicks 
-class ClickMouse(threading.Thread):
+while stopLoop == False:
 
-    # Delay and button click are both in class
-    def __init__(self, delay, button):
-        super(ClickMouse, self).__init__()
-        self.delay = delay
-        self.button = button
-        self.running = False
-        self.program_running = True
+    # Threading used to conatrol clicks 
+    class ClickMouse(threading.Thread):
 
-    def startClicking(self):
-        self.running = True
-    
-    def stopClicking(self):
-        self.running = False
-    
-    def exit(self):
-        self.stopClicking()
-        self.program_running = False
+        # Delay and button click are both in class
+        def __init__(self, delay, button):
+            super(ClickMouse, self).__init__()
+            self.delay = delay
+            self.button = button
+            self.running = False
+            self.program_running = True
 
-    # Now define a method to check, run loop until
-    # If method is true another loop will check
-    # If it is set to true or not
-    # for mouse click set to button and delay
-    def run(self):
-        while self.program_running:
-            while self.running:
-                mouse.click(self.button)
-                time.sleep(self.delay)
-            time.sleep(0.001)
+        def startClicking(self):
+            self.running = True
+        
+        def stopClicking(self):
+            self.running = False
+        
+        def exit(self):
+            self.stopClicking()
+            self.program_running = False
 
-# mouse controller instance
-mouse = Controller()
-click_thread = ClickMouse(delay, button)
-click_thread.start()
+        # Now define a method to check, run loop until
+        # If method is true another loop will check
+        # If it is set to true or not
+        # for mouse click set to button and delay
+        def run(self):
+            while self.program_running:
+                while self.running:
+                    mouse.click(self.button)
+                    time.sleep(self.delay)
+                time.sleep(0.001)
 
-    # New method on_press, taking key as argument
+    # mouse controller instance
+    mouse = Controller()
+    click_thread = ClickMouse(delay, button)
+    click_thread.start()
 
-def on_press(key): 
+        # New method on_press, taking key as argument
 
-    # startStopKey will stop clicking if 
-    # running flag is set to true
+    def on_press(key): 
 
-    if key == startStopKey:
-        if click_thread.running:
-            click_thread.stopClicking()
-        else:
-            click_thread.startClicking()
+        # startStopKey will stop clicking if 
+        # running flag is set to true
 
-    # Exit method called, terminates auto
-    # clicker when key is pressed. 
+        if key == startStopKey:
+            if click_thread.running:
+                click_thread.stopClicking()
+            else:
+                click_thread.startClicking()
 
-    elif key == stopKey:
-        click_thread.exit()
-        listener.stop()
+        # Exit method called, terminates auto
+        # clicker when keya is pressed. 
 
-with Listener(on_press=on_press) as listener:
-    listener.join()
+        elif key == stopKey:
+            click_thread.exit()
+            listener.stop()
+            stopLoop = True
+
+    with Listener(on_press=on_press) as listener:
+        listener.join()
